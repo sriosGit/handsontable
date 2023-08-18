@@ -18,16 +18,16 @@ const output = document.querySelector('#output');
 console.log("hola");
 
 let myDropzone = new Dropzone("#my-great-dropzone");
-const headers = ["First name", "Last name", "Email"];
+const headers = ["nombre", "codigo", "centro de costo padre"];
 
-const emailValidator =  /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+// const emailValidator =  /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 const hotTable = new Handsontable(example, {
   colHeaders: headers,
   columns: [
     { data: 0, type: "text" },
     { data: 1, type: "text" },
-    { data: 2, type: "text", validator: emailValidator, allowInvalid: true  },
+    { data: 2, type: "text", allowInvalid: true  },
     /*
     {
       data: 4,
@@ -155,7 +155,7 @@ function createExcel() {
   var wb = utils.book_new();
   var ws = utils.aoa_to_sheet(excelData); // Convertir el arreglo de arreglos a hoja de cálculo
 
-  utils.book_append_sheet(wb, ws, "Hoja1"); // Agregar la hoja al libro de trabajo
+  utils.book_append_sheet(wb, ws, "Registros"); // Agregar la hoja al libro de trabajo
 
   // Convertir el libro de trabajo a un archivo binario
   var excelBuffer = write(wb, { bookType: "xlsx", type: "array" });
@@ -174,12 +174,14 @@ sendExcelButton.addEventListener("click", function () {
   // Crear un objeto FormData para enviar el archivo a través de Axios
   const blob = createExcel();
   var formData = new FormData();
-  formData.append("file", blob, "data.xlsx"); // 'file' es el nombre del campo en el formulario
-
+  // formData.append("file", blob, "data.xlsx"); // 'file' es el nombre del campo en el formulario
+  formData.append(`cost_center[file]`, blob, "data.xlsx")
   // Enviar el archivo al endpoint utilizando Axios
+  console.log(process.env.REACT_APP_LOCAL_JWT)
   axios
-    .post("send_as_excel", formData, {
+    .post("http://localhost:3013/api/v1/cost_centers/imports", formData, {
       headers: {
+        "Authorization": `Bearer ${process.env.REACT_APP_LOCAL_JWT}`,
         "Content-Type": "multipart/form-data",
       },
     })
