@@ -1,0 +1,22 @@
+{
+  "name": "handsontable",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.html",
+  "private": true,
+  "scripts": {
+    "start": "parcel index.html --open",
+    "build": "parcel build index.html"
+  },
+  "dependencies": {
+    "axios": "^1.4.0",
+    "dropzone": "^6.0.0-beta.2",
+    "handsontable": "13.0.0",
+    "xlsx": "^0.18.5"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.14.3",
+    "parcel-bundler": "^1.12.5"
+  },
+  "keywords": []
+}
